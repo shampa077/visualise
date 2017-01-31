@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>World Map</title>
+
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="http://d3js.org/topojson.v1.min.js"></script>
+
+    <style>
+        .canvas {
+            border: thin solid black;
+        }
+
+        .country {
+            fill: #ccc;
+            stroke: #fff;
+        }
+    </style>
+
+</head>
+<body>
+
+<svg class="canvas" width="960px" height="600px">
+
+</svg>
+
+<script>
+    var canvas = d3.select("svg");
+
+    d3.json("worldMap.json", function(error, data) {
+        var mapData = topojson.feature(data, data.objects.states);
+
+        var projection = d3.geoMercator()
+            .fitExtent([[20, 20], [940, 480]], mapData);
+
+        var path = d3.geoPath()
+            .projection(projection);
+
+        canvas.selectAll("path")
+            .data(mapData.features)
+            .enter()
+            .append("path")
+            .attr("class", "country")
+            .attr("d", path);
+    });
+</script>
+</body>
+</html>
+
