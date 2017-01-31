@@ -44,6 +44,10 @@
             .attr("class", "country")
             .attr("d", path);
     });
+	
+	 d3.json("WorldGDP.csv", function(data) {
+      console.write(data);
+    });
 </script>
 </body>
 </html>
