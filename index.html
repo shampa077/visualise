@@ -45,7 +45,7 @@
             .attr("d", path);
     });
 	
-	 d3.json("WorldGDP.csv", function(data) {
+	 d3.csv("WorldGDP.csv", function(data) {
       console.log(data[5]);
     });
 </script>
