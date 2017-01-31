@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML Example</title>
+
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <style>
+        .canvas {
+            border-style: solid;
+            border-width: thin;
+            border-color: black;
+        }
+    </style>
+</head>
+<body>
+
+    <svg class="canvas" height="400px" width="400px">
+
+    </svg>
+
+<script>
+
+    // select the svg canvas
+    var canvas = d3.select("svg");
+
+    function rowProcessor(d) {
+        return {
+            "id": parseInt(d.id),
+            "type": parseInt(d.type),
+            "amount": parseInt(d.amount)
+        }
+    }
+
+    function dataProcessor(d){
+        canvas.selectAll("circle")
+            .data(d)
+            .enter()
+            .append("circle")
+            .attr("cy", 100)
+            .attr("fill", "lightblue")
+            .attr("cx", function (d, index) {
+                return 30 + index * 130;
+            })
+            .attr("r", function (d, index) {
+                return d.amount * 10;
+            });
+        d3.csv("data-new.csv", rowProcessor, newDataProcessor);
+    }
+    
+    function pair(d) {
+        return d.id;
+    }
+    
+    function newDataProcessor(d){
+        canvas.selectAll("circle")
+            .data(d, pair)
+            .transition()
+            .attr("r", function (d, index) {
+                return d.amount * 10;
+            });
+
+        canvas.selectAll("circle")
+            .data(d, pair)
+            .exit()
+            .transition()
+            .remove();
+    }
+
+    d3.csv("data.csv", rowProcessor, dataProcessor);
+
+</script>
+</body>
+</html>
+
+
+
